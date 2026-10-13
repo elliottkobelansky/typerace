@@ -4,7 +4,7 @@ TypeRacer-style typing races in your terminal. Type quotes from movies, TV,
 books, speeches and songs word by word, then see your speed over the race and
 speedcubing-style averages.
 
-![A race and its results in typerace](docs/demo.gif)
+![A race and its results in typerace](https://raw.githubusercontent.com/elliottkobelansky/typerace/main/docs/demo.gif)
 
 - **About 6,500 quotes**, short to very long, mixed like TypeRacer. You won't
   see a quote again until you've done every quote of its length.
