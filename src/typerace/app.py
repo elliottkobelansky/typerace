@@ -568,6 +568,8 @@ def cli(argv=None):
     args = p.parse_args(argv)
     if args.history:
         return show_history()
+    if os.environ.get("TYPERACE_SEED"):   # repeatable quote choice, for tests and demos
+        random.seed(os.environ["TYPERACE_SEED"])
     picker = Picker(all_quotes(), args.length)
     os.environ.setdefault("ESCDELAY", "25")
     try:

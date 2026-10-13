@@ -4,19 +4,7 @@ TypeRacer-style typing races in your terminal. Type quotes from movies, TV,
 books, speeches and songs word by word, then see your speed over the race and
 speedcubing-style averages.
 
-```
-╭─ race ───────────────────────────────────────────────────────────────╮
-│ you                                                                  │
-│ ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄▶┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┃          92 wpm │
-╰──────────────────────────────────────────────────────────────────────╯
-╭──────────────────────────────────────────────────────────────────────╮
-│ It was the best of times, it was the worst of times, it was the age  │
-│ of wisdom, it was the age of foolishness, it was the epoch of belief │
-╰──────────────────────────────────────────────────────────────────────╯
-╭──────────────────────────────────────────────────────────────────────╮
-│ wor▌                                                                 │
-╰──────────────────────────────────────────────────────────────────────╯
-```
+![A race and its results in typerace](docs/demo.gif)
 
 - **About 6,500 quotes**, short to very long, mixed like TypeRacer. You won't
   see a quote again until you've done every quote of its length.
@@ -93,6 +81,10 @@ python3 -m unittest discover -s tests    # tests (a full race is played in a pty
 sh packaging/build-deb.sh                # build dist/typerace_VERSION_all.deb
 python3 tools/update_quotes.py           # refresh the quotes from Monkeytype
 ```
+
+The demo GIF is recorded with [VHS](https://github.com/charmbracelet/vhs) by the
+`demo` workflow (Actions tab → demo → Run workflow) from a tape that
+`tools/demo.py` writes.
 
 Releases: bump `__version__` in `src/typerace/__init__.py`, then push a tag
 like `v0.2.0`. GitHub Actions builds the wheel, sdist and `.deb`, attaches them
