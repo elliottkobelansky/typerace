@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=typerace
+Comment=TypeRacer-style typing races in the terminal
+Exec=typerace
+Terminal=true
+Icon=accessories-character-map
+Categories=Game;Education;
+Keywords=typing;typeracer;wpm;

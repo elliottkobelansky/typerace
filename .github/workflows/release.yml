@@ -1,0 +1,62 @@
+name: release
+
+# Push a tag like v0.2.0 (matching __version__) to build the wheel, sdist and
+# .deb, attach them to a GitHub release, and publish to PyPI.
+# PyPI publishing runs once the repository variable PUBLISH_TO_PYPI is "true"
+# (after setting up trusted publishing on pypi.org).
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Tag matches version
+        run: |
+          version=$(sed -n 's/^__version__ = "\(.*\)"/\1/p' src/typerace/__init__.py)
+          test "v$version" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME != version $version"; exit 1; }
+      - run: python -m unittest discover -s tests
+      - name: Build
+        run: |
+          python -m pip install build
+          python -m build
+          sh packaging/build-deb.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  github-release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - run: gh release create "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  pypi:
+    needs: build
+    if: vars.PUBLISH_TO_PYPI == 'true'
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - run: rm dist/*.deb
+      - uses: pypa/gh-action-pypi-publish@release/v1

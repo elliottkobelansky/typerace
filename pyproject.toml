@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "typerace"
+dynamic = ["version"]
+description = "TypeRacer-style typing races in the terminal"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE", "QUOTES.md"]
+authors = [{ name = "Elliott Kobelansky" }]
+requires-python = ">=3.9"
+dependencies = ['windows-curses; sys_platform == "win32"']
+keywords = ["typing", "typeracer", "wpm", "terminal", "tui", "curses"]
+classifiers = [
+    "Environment :: Console :: Curses",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Education",
+    "Topic :: Games/Entertainment",
+]
+
+[project.urls]
+Homepage = "https://github.com/elliottkobelansky/typerace"
+Issues = "https://github.com/elliottkobelansky/typerace/issues"
+
+[project.scripts]
+typerace = "typerace.app:cli"
+
+[tool.setuptools.dynamic]
+version = { attr = "typerace.__version__" }
+
+[tool.setuptools.package-data]
+typerace = ["quotes.json"]
