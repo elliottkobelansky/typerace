@@ -2,8 +2,8 @@ name: release
 
 # Push a tag like v0.2.0 (matching __version__) to build the wheel, sdist and
 # .deb, attach them to a GitHub release, and publish to PyPI.
-# PyPI publishing runs once the repository variable PUBLISH_TO_PYPI is "true"
-# (after setting up trusted publishing on pypi.org).
+# PyPI publishing uses trusted publishing (pypi.org, environment "pypi") and is
+# switched on by the repository variable PUBLISH_TO_PYPI=true.
 
 on:
   push:
@@ -42,7 +42,10 @@ jobs:
         with:
           name: dist
           path: dist/
-      - run: gh release create "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --generate-notes
+      - name: Create the release (or update its files on a re-run)
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --generate-notes \
+            || gh release upload "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" --clobber
         env:
           GH_TOKEN: ${{ github.token }}
 
