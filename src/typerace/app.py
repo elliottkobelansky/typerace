@@ -216,7 +216,12 @@ def read_key(scr):
         return "ESC"
     if k in ("\x08", "\x17"):             # Ctrl+Backspace, Ctrl+W
         return "DELWORD"
-    if k in ("\x7f", curses.KEY_BACKSPACE):
+    if k == curses.KEY_BACKSPACE:
+        # curses turns the terminal's "backspace" code into KEY_BACKSPACE. Where
+        # that code is ^H (macOS terminfo), the Backspace key itself sends DEL
+        # and ^H means Ctrl+Backspace.
+        return "DELWORD" if curses.tigetstr("kbs") == b"\x08" else "BACK"
+    if k == "\x7f":
         return "BACK"
     return k
 
